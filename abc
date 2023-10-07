@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+
+int main() {
+	int n, m;
+	cin >> n >> m;
+	vector<int> data(m);
+	vector<string> vec(n);
+	vector<int> ans(n);
+	rep(i, m) {
+		cin >> data[i];
+	}
+	rep(i, n) {
+		cin >> vec[i];
+	}
+	rep(i, n) {
+		rep(j, m) {
+			if (vec[i][j] == 'o') {
+				ans[i] += data[j];
+			}
+
+		}
+		ans[i] += i + 1;
+	}
+		vector<int> Sans(n);
+		rep(i, n) {
+		Sans[i] = ans[i];
+	}
+	sort(ans.begin(), ans.end());
+
+	int max = ans[n-1];
+	vector<vector<int>> A(n + 1, vector<int>(m));
+	vector<int> Data(m);
+	rep(i, m) {
+		A[0][i] = data[i];
+		Data[i] = data[i];
+		
+	}
+  sort(data.begin(), data.end());
+	for (int i = 1; i < n + 1; i++) {
+		rep(j, m) {
+			if (vec[i - 1][j] == 'o') {
+				A[i][j] = 1;
+			}
+			else {
+				A[i][j] = 0;
+			}
+		}
+	}
+	vector<vector<int>> Ans(n + 1, vector<int>(m));
+	rep(i,m) Ans[0][i] = data[i];
+	bool finished = false;
+	for(int i = 0;i < m;i++){
+	  finished = false;
+	  	rep(j,m){
+	  	  if(data[i] == A[0][j]){
+	  	    finished = true;
+	  	    for(int k = 1;k < n+1;k++){
+	  	      Ans[k][i] = A[k][j];
+	  	      A[0][j] = -1;
+	  	    }
+	  	    
+	  	  }
+	  	  if(finished) break;
+	  	}
+	  
+	}
+	
+	int p;
+	rep(i,n){
+	  p = 0;
+	  	if(max == Sans[i]){
+	  	  cout << 0 <<"\n";
+	  	}
+	  	else{
+	  	  for(int j = m - 1;j >= 0;j--){
+	  	      if(A[i+1][j] == 0){
+	  	        Sans[i] += Data[j];
+	  	        //cout << "i:" << i <<" j:" << j << " Sans: "<< Sans[i] << "\n";
+	  	        p++;
+	  	        if(Sans[i] > max){
+	  	          cout << p << "\n";
+	  	          break;
+	  	        }
+	  	      }
+	  	    }
+	  	  }
+	  	}
+	
+
+
+}
